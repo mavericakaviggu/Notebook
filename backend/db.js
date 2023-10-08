@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 // const { MongoClient } = require("mongodb");
-const mongoURI = "mongodb://127.0.0.1:27017/";
+const mongoURI = "mongodb://127.0.0.1:27017/notebook";
 // const client = new MongoClient(mongoURI);
 
 const connectToMongo = async () => {
