@@ -70,7 +70,7 @@ async (req,res)=>{
     //catch emthod if there is any error to handle
     catch(error){
         console.error(error.message);
-        res.status(500).send("Some error occured")
+        res.status(500).send("Internal server error")
 
     }
         
@@ -79,5 +79,56 @@ async (req,res)=>{
     // res.json({error:'Please enter a unique value for email',message:err.message})});
 
 });
+
+//authenticating the user using:Post "/api/auth/login". No login required
+router.post('/login',[
+    //below code fetches email and passowrd sent in json format and does validation check using "express-validator" library
+    body('email',"Enter a valid email").isEmail(),
+    body('password',"Password cannot be blank").exists(),
+],async(req,res)=>{
+const errors = validationResult(req)
+if (!errors.isEmpty()){
+return res.status(400).json({errors:errors.array()})
+}
+//destructuring and assigning the variables comming from the request API sent
+const {email,password} = req.body;
+try {
+    //tis code tries to fetch the user from "User" using email as ref from mongodb that we created, 
+    let user =await User.findOne({email});
+    //if the user doesnt not exists, return status 400 and the below message
+    if(!user){
+        return res.status(400).json({error:"Please try to login with correct credentials"});
+
+    }
+    //comparing password the user sent and the one that is stored in db using bcryptjs
+    const passwordCompare =await bcrypt.compare(password,user.password);
+    // if passowrd doesnt match, return status 400 and the below message
+    if(!passwordCompare){
+        return res.status(400).json({error:"Please try to login with correct credentials"});
+
+    }
+    //fetching user id from the database to create a token, since ID is unique
+    const data = {
+        user:{
+            id:user.id
+        }
+    }
+
+    //construction of authToken using JWT 
+    const authToken = jwt.sign(data,jwtSecret);
+    //if passowrd and email matches with the credentials in the db , then send authtoken as response 
+        res.json({authToken})
+
+    }
+    //catches any error 
+    catch(error){
+        console.error(error.message);
+        res.status(500).send("Internal Server error ")
+
+    }
+}
+
+
+)
 
 module.exports = router
