@@ -127,9 +127,7 @@ router.delete(
         return res.status(401).send("Not Allowed");
       }
 
-      //"findByIdAndUpdate" takes id of the note to be updated as the 1st parameter.
-      //"{$set:newNote}" sets the new values from the "newNote".
-      //"{new:true}" returns the updated note as the result of the operation.
+      //"findByIdAndDelete" takes id of the note to be deleted as the 1st parameter.
       note = await Note.findByIdAndDelete(req.params.id);
       res.json({ Success: "Note has been deleted", note: note });
     } catch (error) {
