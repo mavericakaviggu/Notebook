@@ -13,7 +13,12 @@ const jwtSecret = "vampyzombie"; //signature used in web token system to authent
 
 const fetchuser = require("../middleware/fetchUser");
 
-//Create a user using POST "api/auth/createuser".No login require
+//Create a user using POST "api/auth/createuser".No login require(No need of user authentication).
+//Route handler for a POST request in a Node.js application using Express.
+//Basic syntax is as follows.
+// router.post("/addNote", fetchuser, [Body validation...], async (req, res) => {
+//   // Route handler code
+// });
 router.post(
   "/createuser",
   [
