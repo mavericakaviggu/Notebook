@@ -40,7 +40,8 @@ router.post(
 
       
       //Creating a note object that needs to be saved in the MongoDB.
-      //Where as the fourth argument "user" is caught from req header?
+      //Where user: req.user.id is fetched from the auth-token used in fetchUser.
+      //req.user is defined in fetchUser.js
       const note = new Note({
         title,
         description,
@@ -56,5 +57,40 @@ router.post(
     }
   }
 );
+
+//Route 3 : Update an exisitng Note : POST "api/auth/updateNote".Login required
+router.put(
+  //"id" is the url parameter to fetch the details to that particular user only.
+  "/updateNote/:id",
+  fetchuser,
+  async (req, res) => {
+    const { title, description, tag } = req.body;
+
+    //Creating an empty object.
+    const newNote = {};
+    //Only the updated values will be stored in the above empty object.
+    if(title){newNote.title = title}
+    if(description){newNote.description = description}
+    if(tag){newNote.tag = tag}
+
+    //Find the note to be updated and update it
+    //req.params.id this takes the id from the url endpoint.
+    //Finds the note in the db by its ID, which is taken from the URL parameter.
+    let note =await Note.findById(req.params.id);
+    if(!note){
+      return res.status(404).send("Not found")
+    }
+    //Checks if the user who is attempting to update the note is the owner of the note.
+    if(note.user.toString()!==req.user.id)
+    {
+      return res.status(401).send("Not Allowed");
+    }
+
+    //"findByIdAndUpdate" takes id of the note to be updated as the 1st parameter.
+    //"{$set:newNote}" sets the new values from the "newNote".
+    //"{new:true}" returns the updated note as the result of the operation.
+    note = await Note.findByIdAndUpdate(req.params.id,{$set:newNote},{new:true})
+    res.json(note);
+  });
 
 module.exports = router;
