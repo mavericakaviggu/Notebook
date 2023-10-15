@@ -1,14 +1,14 @@
 //This hook is used to manage state within a functional component.
-// import { useState } from "react";
+import { useState } from "react";
 import NoteContext from "./noteContext";
 
 //Functional component named 'NoteState' takes 'props' as an arguement.
 const NoteState = (props) =>{
-    const notes = [
+    const notesInitial = [
         {
           "_id": "6526a9981a6417a0ae3d0880",
           "user": "65267408d96ca56ee7fcc53a",
-          "title": "My title",
+          "title": "My title different",
           "description": "Please wake up early",
           "tag": "personnel",
           "date": "2023-10-11T13:56:40.106Z",
@@ -16,6 +16,7 @@ const NoteState = (props) =>{
         }
       ]
 
+      const [note,setNote] = useState(notesInitial)
     // //Initialize the initial state using 'useState'.
     // //'s1' is an object having 2 properties 'name' and 'class'.
     // const s1 = {
@@ -47,7 +48,7 @@ const NoteState = (props) =>{
     '"props.children"' allows this component to wrap its children
      components and provide the context data to them.*/
     return (
-        <NoteContext.Provider value={{notes}}>
+        <NoteContext.Provider value={{note,setNote}}>
             {props.children}
         </NoteContext.Provider>
     )
