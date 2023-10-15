@@ -13,7 +13,47 @@ const NoteState = (props) =>{
           "tag": "personnel",
           "date": "2023-10-11T13:56:40.106Z",
           "__v": 0
-        }
+        },{
+            "user": "65267408d96ca56ee7fcc53a",
+            "title": "My title late",
+            "description": "Woke up late today",
+            "tag": "private",
+            "_id": "652bf020cbe8da4feb5c7907",
+            "date": "2023-10-15T13:58:56.062Z",
+            "__v": 0
+          },{
+            "_id": "6526a9981a6417a0ae3d0880",
+            "user": "65267408d96ca56ee7fcc53a",
+            "title": "My title different",
+            "description": "Please wake up early",
+            "tag": "personnel",
+            "date": "2023-10-11T13:56:40.106Z",
+            "__v": 0
+          },{
+              "user": "65267408d96ca56ee7fcc53a",
+              "title": "My title late",
+              "description": "Woke up late today",
+              "tag": "private",
+              "_id": "652bf020cbe8da4feb5c7907",
+              "date": "2023-10-15T13:58:56.062Z",
+              "__v": 0
+            },{
+                "_id": "6526a9981a6417a0ae3d0880",
+                "user": "65267408d96ca56ee7fcc53a",
+                "title": "My title different",
+                "description": "Please wake up early",
+                "tag": "personnel",
+                "date": "2023-10-11T13:56:40.106Z",
+                "__v": 0
+              },{
+                  "user": "65267408d96ca56ee7fcc53a",
+                  "title": "My title late",
+                  "description": "Woke up late today",
+                  "tag": "private",
+                  "_id": "652bf020cbe8da4feb5c7907",
+                  "date": "2023-10-15T13:58:56.062Z",
+                  "__v": 0
+                },
       ]
 
       const [note,setNote] = useState(notesInitial)
