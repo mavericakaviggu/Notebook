@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* changes the cursor to hand when it hovers over icon used from fontawesome */
+i{
+  cursor:pointer;
+}
