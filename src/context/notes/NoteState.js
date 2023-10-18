@@ -82,10 +82,16 @@ const NoteState = (props) => {
   };
 
   //Delete a Note
-  const deleteNote = (id) => {};
+  const deleteNote = (id) => {
+    //add api call
+    var newNotes = notes.filter((note)=>{return notes._id!==id})
+    setNotes(newNotes);
+  };
 
   //Edit a Note
-  const editNote = (id) => {};
+  const editNote = (id,title,description,tag) => {
+    
+  };
 
   // //Initialize the initial state using 'useState'.
   // //'s1' is an object having 2 properties 'name' and 'class'.

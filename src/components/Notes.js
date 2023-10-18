@@ -7,8 +7,6 @@ const Notes = () => {
   const context = useContext(noteContext);
   const {notes} = context;
 
-    
-
   return (
     <>
     <AddNote/>
