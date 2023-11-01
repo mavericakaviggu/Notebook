@@ -1,5 +1,6 @@
 const connectToMongo = require("./db");
 const express = require("express");
+var cors = require('cors');
 // const mongoose = require("mongoose");
 
 connectToMongo();
@@ -9,6 +10,7 @@ connectToMongo();
 const app = express();
 const port = 5000;
 
+app.use(cors())
 //Helps in viewing json fies through thunderstorm clinet(postman)
 app.use(express.json());
 
