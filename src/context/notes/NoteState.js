@@ -24,7 +24,6 @@ const NoteState = (props) => {
     });
     //parses the json input
     const json = await response.json();
-    console.log(json)
     setNotes(json);
   };
 

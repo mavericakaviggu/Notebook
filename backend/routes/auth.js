@@ -70,6 +70,7 @@ router.post(
 
       //generates a token by combining the data and secret key, and return this
       const authToken = jwt.sign(data, jwtSecret);
+    
       res.json({ authToken });
 
       //below code is for
@@ -96,6 +97,7 @@ router.post(
     body("password", "Password cannot be blank").exists(),
   ],
   async (req, res) => {
+    let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -117,7 +119,7 @@ router.post(
       if (!passwordCompare) {
         return res
           .status(400)
-          .json({ error: "Please try to login with correct credentials" });
+          .json({success, error: "Please try to login with correct credentials" });
       }
       //fetching user id from the database to create a token, since ID is unique
       const data = {
@@ -128,8 +130,9 @@ router.post(
 
       //construction of authToken using JWT
       const authToken = jwt.sign(data, jwtSecret);
+      success = true;
       //if passowrd and email matches with the credentials in the db , then send authtoken as response
-      res.json({ authToken });
+      res.json({success, authToken });
     } catch (error) {
       //catches any error
       console.error(error.message);
