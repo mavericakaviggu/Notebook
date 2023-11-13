@@ -13,7 +13,7 @@ const jwtSecret = "vampyzombie"; //signature used in web token system to authent
 
 const fetchuser = require("../middleware/fetchUser");
 
-//Create a user using POST "api/auth/createuser".No login require(No need of user authentication).
+//CREATE A USER using POST "api/auth/createuser".No login require(No need of user authentication).
 //Route handler for a POST request in a Node.js application using Express.
 //Basic syntax is as follows.
 // router.post("/addNote", fetchuser, [Body validation...], async (req, res) => {
@@ -29,12 +29,13 @@ router.post(
   ],
   //whichever code returns a promise you need to use await/async
   async (req, res) => {
+    let success=false;
     //if ther are errors, return Bad Request and the errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({success, errors: errors.array() });
     }
-
+    
     //check whether the user with this email exists already
     try {
       //since findone returns a value(promise ) , we need to use await/async function
@@ -46,7 +47,7 @@ router.post(
         //if user is present already in the db, then sen response as status 400
         return res
           .status(400)
-          .json({ error: "sorry user with this email already exists " });
+          .json({ success, error: "sorry user with this email already exists " });
       }
 
       const salt = await bcrypt.genSalt(10); //this line adds extra character at the end of the password
@@ -71,7 +72,8 @@ router.post(
       //generates a token by combining the data and secret key, and return this
       const authToken = jwt.sign(data, jwtSecret);
     
-      res.json({ authToken });
+      success = true;
+      res.json({success, authToken });
 
       //below code is for
       //Once the user is created successfulyyy, the user details is sent as response in json format
@@ -88,7 +90,7 @@ router.post(
   }
 );
 
-//authenticating the user using:Post "/api/auth/login". No login required
+//AUTHENTICATE THE USER using:Post "/api/auth/login". No login required
 router.post(
   "/login",
   [
@@ -150,7 +152,7 @@ router.post("/getUser", fetchuser, async (req, res) => {
     //fetches every details of the user except password by referring to the userId.
     const user = await User.findById(userId).select("-password");
     res.send(user);
-  } catch (error) {
+  }catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server error ");
   }

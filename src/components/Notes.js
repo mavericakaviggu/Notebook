@@ -2,13 +2,19 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import noteContext from "../context/notes/noteContext";
 import NoteItem from "./NoteItem";
 import AddNote from "./AddNote";
+import {useNavigate} from 'react-router-dom';
 
-const Notes = () => {
+const Notes = (props) => {
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
+  let navigate = useNavigate();
 
     useEffect(() => {
-    getNotes();
+      if(localStorage.getItem('token')){
+        getNotes()
+      }else{
+        navigate("/login")
+      }
     //eslint-disable-next-line
   }, []);
 
@@ -26,14 +32,15 @@ const Notes = () => {
     ref.current.click();
    
     setNote({id:currentNote._id,etitle:currentNote.title,edescription:currentNote.description,etag:currentNote.tag})
+    
   };
 
   const handleClick = (e) => {
-    console.log("Updating the note ...",note)
     //prevents the reloading of the page.
     e.preventDefault();
     editNote(note.id, note.etitle, note.edescription, note.etag)
     refClose.current.click();
+    props.showAlert("Updated Succesfully","success")
   };
 
   const onChange = (e) => {
@@ -45,7 +52,7 @@ const Notes = () => {
 
   return (
     <>
-      <AddNote />
+      <AddNote showAlert={props.showAlert}/>
       {/* "d-none" doesnt allow to display that component  */}
       <button
         type="button"
@@ -144,11 +151,11 @@ const Notes = () => {
       <div className=" row my-3">
         <h2> your notes</h2>
         <div className="container">
-        {notes.length===0 &&  'no notes to display'}
+        {Array.isArray(notes) && notes.length===0 &&  'no notes to display'}
         </div>
-        {notes.map((note) => {
+        {Array.isArray(notes) && notes.map((note) => {
           return (
-            <NoteItem key={note._id} updateNote={updateNote} note={note} />
+            <NoteItem showAlert={props.showAlert} key={note._id} updateNote={updateNote} note={note} />
           );
         })}
       </div>

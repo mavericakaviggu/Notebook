@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {useNavigate} from 'react-router-dom';
 
+
 function Login(props) {
   const [cred, setCred] = useState({ email: "", password: "" });
   let navigate = useNavigate();
@@ -12,21 +13,20 @@ function Login(props) {
     const response = await fetch("http://localhost:5000/api/auth/login", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjUyNjc0MDhkOTZjYTU2ZWU3ZmNjNTNhIn0sImlhdCI6MTY5NzAxODg4OH0.PdalRTZqyEaJxw-hI5KzvXqL4yXMhWjJW65Khcm_tws",
-        
+        "Content-Type": "application/json"       
       },
       body: JSON.stringify({ email: cred.email, password: cred.password }),
     });
     const json = await response.json();
-    console.log(json);
+    
     if (json.success) {
       //save the auth token and redirect
-      localStorage.setItem("token", json.authtoken);
-      navigate("/");
+      localStorage.setItem("token", json.authToken);
+      props.showAlert("Log-In Successful","success")
+      navigate("/home");
+      
     } else {
-      alert("Invalid credentials");
+      props.showAlert("Invalid credentials","danger")
     }
   };
 
@@ -35,7 +35,8 @@ function Login(props) {
   };
 
   return (
-    <div>
+    <div className="mt-3">
+      <h2>Login to access notes</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">

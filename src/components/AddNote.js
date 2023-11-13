@@ -1,19 +1,21 @@
 import React, { useContext, useState } from "react";
 import noteContext from "../context/notes/noteContext";
 
-const AddNote = () => {
+const AddNote = (props) => {
   const context = useContext(noteContext);
   const { addNote } = context;
 
   //defining intial value of the variables to use them in "onChange" function.
   const [note, setNote] = useState({ title: "", description: "", tag: "" });
 
+  
   //handleClick function is triggered by clicking on submit button.
   const handleClick = (e) => {
     //prevents the reloading of the page.
     e.preventDefault();
     addNote(note.title,note.description,note.tag);
     setNote({ title: "", description: "", tag: "default" })
+    props.showAlert("Addedd Succesfully","success")
   };
 
   const onChange = (e) => {
